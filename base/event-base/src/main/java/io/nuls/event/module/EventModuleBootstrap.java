@@ -29,6 +29,12 @@ public class EventModuleBootstrap extends AbstractEventModule {
 
     @Override
     public String getInfo() {
-        return null;
+        StringBuilder str = new StringBuilder();
+        str.append("moduleName:");
+        str.append(getModuleName());
+        str.append(",moduleStatus:");
+        str.append(getStatus());
+        str.append(",ThreadCount:");
+        return str.toString();
     }
 }

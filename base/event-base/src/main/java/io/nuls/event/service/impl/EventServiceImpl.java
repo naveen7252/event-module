@@ -26,9 +26,4 @@ public class EventServiceImpl implements EventService {
         return restTemplate.getForObject(EventResourceConstant.BLOCK_BY_HEIGHT+height,Result.class);
     }
 
-/*
-	@Override
-	public ApiResponse getTxByHash(String hash) {
-		return restTemplate.getForObject(NulsConstants.TX_BY_HASH+NulsConstants.FORWARD_SLASH+hash, ApiResponse.class);
-	}*/
 }

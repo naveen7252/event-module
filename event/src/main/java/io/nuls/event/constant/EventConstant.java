@@ -2,7 +2,7 @@ package io.nuls.event.constant;
 
 public interface EventConstant {
 
-    short MODULE_ID_EVENT = 8;
+    short MODULE_ID_EVENT = 10;
 
     public static final int TX_TYPE_COINBASE = 1;
 
