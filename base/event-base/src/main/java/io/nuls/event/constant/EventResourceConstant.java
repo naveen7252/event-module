@@ -18,4 +18,8 @@ public interface EventResourceConstant {
 
     String BLOCK_BY_HEIGHT = "/api/block/height/";
 
+    String YELLOW = "YELLOW";
+
+    String RED = "RED";
+
 }

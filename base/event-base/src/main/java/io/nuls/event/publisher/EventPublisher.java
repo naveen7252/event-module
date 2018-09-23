@@ -2,6 +2,7 @@ package io.nuls.event.publisher;
 
 import io.nuls.event.constant.EventConstant;
 import io.nuls.event.constant.EventResourceConstant;
+import io.nuls.event.model.AgentPunishDTO;
 import io.nuls.event.model.SubscribableMessage;
 import io.nuls.event.service.EventService;
 import io.nuls.kernel.model.Result;
@@ -35,6 +36,7 @@ public class EventPublisher {
                 response = eventService.getLatestBlock(bestHeight);
                 System.out.println("block by height response :"+response.isSuccess());
                 publishEventByTxType(response);
+                publishAgentEvent(bestHeight);
             }
         }
     }
@@ -45,7 +47,9 @@ public class EventPublisher {
             List<Map<String, Object>> txListMap = (List<Map<String, Object>>)blockMap.get("txList");
             for(Map txMap : txListMap){
                 int txType = (Integer)txMap.get("type");
+                String txHash = (String)txMap.get("hash");
                 List<Map<String, Object>> outputsList =  (List<Map<String, Object>>)txMap.get("outputs");
+                System.out.println("Transaction type  -> "+txType);
                 switch (txType) {
                     case EventConstant.TX_TYPE_COINBASE:
                         // Do nothing?? or notify Consensus awardees ?
@@ -55,10 +59,10 @@ public class EventPublisher {
                         publishTxEvent(outputsList,EventResourceConstant.TX_TRANSFER_SUBSCRIPTION);
                         break;
                     case EventConstant.TX_TYPE_YELLOW_PUNISH:
-                        publishAgentEvent(outputsList,EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
+                        //publishAgentEvent(txHash,EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
                         break;
                     case EventConstant.TX_TYPE_RED_PUNISH:
-                        publishAgentEvent(outputsList,EventResourceConstant.AGENT_REDCARD_SUBSCRIPTION);
+                        //publishAgentEvent(txHash,EventResourceConstant.AGENT_REDCARD_SUBSCRIPTION);
                     default:
                         System.out.println("Transaction type not supported -> "+txType);
                         break;
@@ -89,7 +93,17 @@ public class EventPublisher {
         }
     }
 
-    private void publishAgentEvent(List<Map<String, Object>> txOutPutList,String subscription){
-            //get agent  details by tx hash ???
+    private void publishAgentEvent(int blockHeight){
+       Result result = eventService.getAgentPunish(blockHeight);
+       if(result.isSuccess()){
+           List<AgentPunishDTO> punishDTOS = (List<AgentPunishDTO>) result.getData();
+           for(AgentPunishDTO dto : punishDTOS){
+               if(dto.getPunishType().equals(EventResourceConstant.RED)){
+                   this.template.convertAndSend(EventResourceConstant.AGENT_REDCARD_SUBSCRIPTION+dto.getAgentAddress(),new SubscribableMessage(true,dto));
+               }else if(dto.getPunishType().equals(EventResourceConstant.YELLOW)){
+                   this.template.convertAndSend(EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION+dto.getAgentAddress(),new SubscribableMessage(true,dto));
+               }
+           }
+       }
     }
 }
