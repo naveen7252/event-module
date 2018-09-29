@@ -6,7 +6,7 @@ public interface EventService {
 
      Result getLatestBlock();
 
-     Result getLatestBlock(int height);
+     Result getBlockByHeight(int height);
 
      Result getTxByHash(String hash);
 

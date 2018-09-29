@@ -18,6 +18,10 @@ public interface EventResourceConstant {
 
     String BLOCK_BY_HEIGHT = "/api/block/height/";
 
+    String TX_BY_HASH = "/api/tx/hash/";
+
+    String TX_BY_HASH_BYTES = "/api/tx/bytes";
+
     String YELLOW = "YELLOW";
 
     String RED = "RED";

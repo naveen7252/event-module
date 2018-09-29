@@ -3,30 +3,37 @@ package io.nuls.event.service.impl;
 import io.nuls.account.service.AccountService;
 import io.nuls.consensus.poc.context.PocConsensusContext;
 import io.nuls.consensus.poc.protocol.entity.Agent;
-import io.nuls.consensus.poc.protocol.util.PoConvertUtil;
-import io.nuls.consensus.poc.rpc.model.AgentDTO;
+import io.nuls.consensus.poc.protocol.tx.YellowPunishTransaction;
 import io.nuls.consensus.poc.storage.po.PunishLogPo;
 import io.nuls.event.constant.EventResourceConstant;
 import io.nuls.event.model.AgentPunishDTO;
 import io.nuls.event.service.EventService;
+import io.nuls.event.util.EventUtil;
 import io.nuls.kernel.constant.KernelErrorCode;
 import io.nuls.kernel.context.NulsContext;
+import io.nuls.kernel.exception.NulsException;
 import io.nuls.kernel.model.Result;
+import io.nuls.kernel.model.Transaction;
 import io.nuls.kernel.utils.AddressTool;
-import io.nuls.protocol.service.BlockService;
+import io.nuls.kernel.utils.NulsByteBuffer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
 @Service
 public class EventServiceImpl implements EventService {
 
+    @Value("${API.SERVER.URL}")
+    private String API_SERVER_URL;
+
     @Autowired
     private RestTemplate restTemplate;
 
-    private AccountService accountService = NulsContext.getServiceBean(AccountService.class);
+    private AccountService accountService = null;
 
     @Override
     public Result getLatestBlock(){
@@ -34,13 +41,15 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public Result getLatestBlock(int height) {
+    public Result getBlockByHeight(int height) {
         return restTemplate.getForObject(EventResourceConstant.BLOCK_BY_HEIGHT+height,Result.class);
     }
 
     @Override
     public Result getTxByHash(String hash) {
-        return restTemplate.getForObject("/api/tx/hash/"+hash,Result.class);
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(API_SERVER_URL+EventResourceConstant.TX_BY_HASH_BYTES)
+                .queryParam("hash",hash);
+        return restTemplate.getForObject(uriComponentsBuilder.build().encode().toUri(),Result.class);
     }
 
     @Override
@@ -73,21 +82,10 @@ public class EventServiceImpl implements EventService {
                continue;
             }*/
             String address = AddressTool.getStringAddressByBytes(po.getAddress());
+            accountService = NulsContext.getServiceBean(AccountService.class);
             String alias = accountService.getAlias(address).getData();
-            punishDTOS.add(buildAgentPunishDTO(new Agent(),po,alias));
+            punishDTOS.add(EventUtil.buildAgentPunishDTO(new Agent(),po,alias));
         }
         return new Result(true,KernelErrorCode.SUCCESS,punishDTOS);
-    }
-
-    private AgentPunishDTO buildAgentPunishDTO(Agent agent,PunishLogPo po,String alias){
-        return new AgentPunishDTO.AgentPunishDTOBuilder(
-                AddressTool.getStringAddressByBytes(agent.getAgentAddress())
-                ,po.getType()
-                ,po.getTime())
-                .setAgentHash(agent.getTxHash().getDigestHex())
-                .setAgentName(alias)
-                .setAgentId(PoConvertUtil.getAgentId(agent.getTxHash()))
-                .build();
-
     }
 }
