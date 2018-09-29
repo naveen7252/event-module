@@ -78,7 +78,6 @@ public class EventPublisher {
     private boolean verifyBlockHeight(int bestHeight){
         System.out.println("Block Height:"+bestHeight);
         if(bestHeight > initialHeight){
-            System.out.println("Published Block Event --> "+bestHeight);
             this.initialHeight = bestHeight;
             return true;
         }
@@ -121,7 +120,7 @@ public class EventPublisher {
             TransactionLogicData  data = tx.getTxData();
             for(byte[] addressByte : data.getAddresses()){
                 String agentAddress = AddressTool.getStringAddressByBytes(addressByte);
-                System.out.println("Address for yellow card :"+ agentAddress);
+                System.out.println("Yellow Card for Address:"+ agentAddress);
                 AgentPunishDTO dto = new AgentPunishDTO.AgentPunishDTOBuilder(agentAddress,type,time).build();
                 this.template.convertAndSend(subscription+agentAddress,new SubscribableMessage(true,dto));
             }

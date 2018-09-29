@@ -6,7 +6,6 @@ import io.nuls.consensus.poc.protocol.tx.YellowPunishTransaction;
 import io.nuls.consensus.poc.protocol.util.PoConvertUtil;
 import io.nuls.consensus.poc.storage.po.PunishLogPo;
 import io.nuls.event.constant.EventConstant;
-import io.nuls.event.constant.EventResourceConstant;
 import io.nuls.event.model.AgentPunishDTO;
 import io.nuls.kernel.exception.NulsException;
 import io.nuls.kernel.model.Transaction;
