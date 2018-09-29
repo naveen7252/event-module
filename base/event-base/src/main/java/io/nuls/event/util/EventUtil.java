@@ -28,7 +28,7 @@ public class EventUtil {
 
     }
 
-    public static Transaction getTransaction(int type, String byteStr){
+    public static Transaction parseTransaction(int type, String byteStr){
         byte[] txBytes = Base64.getDecoder().decode(byteStr);
         Transaction tx = null;
         if(type == EventConstant.TX_TYPE_YELLOW_PUNISH){

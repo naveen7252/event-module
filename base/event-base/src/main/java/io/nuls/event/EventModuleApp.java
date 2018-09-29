@@ -12,20 +12,20 @@ import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 @EnableScheduling
-public class EventApplication {
+public class EventModuleApp {
 
-    @Value("${API.SERVER.URL}")
+    @Value("${NULS.API.URL}")
     private String API_SERVER_URL;
 
     @Value("${THREAD.POOL.SIZE}")
     private int threadPoolSize;
 
     public static void main(String[] args) {
-        SpringApplication.run(EventApplication.class, args);
+        SpringApplication.run(EventModuleApp.class, args);
     }
 
     @Bean
-    public RestTemplateBuilder restTemplateBuilder() {
+    private RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder()
                 .rootUri(API_SERVER_URL);
     }

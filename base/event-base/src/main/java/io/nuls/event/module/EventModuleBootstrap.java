@@ -1,9 +1,7 @@
 package io.nuls.event.module;
 
-import io.nuls.consensus.constant.ConsensusConstant;
 import io.nuls.contract.constant.ContractConstant;
-import io.nuls.event.EventApplication;
-import io.nuls.event.module.AbstractEventModule;
+import io.nuls.event.EventModuleApp;
 
 public class EventModuleBootstrap extends AbstractEventModule {
 
@@ -17,7 +15,7 @@ public class EventModuleBootstrap extends AbstractEventModule {
     public void start() {
         String args[] = {};
         this.waitForDependencyRunning(ContractConstant.MODULE_ID_CONTRACT);
-        EventApplication.main(args);
+        EventModuleApp.main(args);
     }
 
     @Override

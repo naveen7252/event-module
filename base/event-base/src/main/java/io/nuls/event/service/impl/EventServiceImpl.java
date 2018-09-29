@@ -27,7 +27,7 @@ import java.util.*;
 @Service
 public class EventServiceImpl implements EventService {
 
-    @Value("${API.SERVER.URL}")
+    @Value("${NULS.API.URL}")
     private String API_SERVER_URL;
 
     @Autowired

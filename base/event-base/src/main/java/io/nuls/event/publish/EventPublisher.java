@@ -1,26 +1,23 @@
-package io.nuls.event.publisher;
+package io.nuls.event.publish;
 
-import io.nuls.core.tools.log.Log;
 import io.nuls.event.constant.EventConstant;
 import io.nuls.event.constant.EventResourceConstant;
 import io.nuls.event.model.AgentPunishDTO;
 import io.nuls.event.model.SubscribableMessage;
 import io.nuls.event.service.EventService;
 import io.nuls.event.util.EventUtil;
-import io.nuls.kernel.model.CoinData;
 import io.nuls.kernel.model.Result;
 import io.nuls.kernel.model.Transaction;
 import io.nuls.kernel.model.TransactionLogicData;
 import io.nuls.kernel.utils.AddressTool;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 
-@Configuration
+@Component
 public class EventPublisher {
 
     @Autowired
@@ -31,13 +28,11 @@ public class EventPublisher {
 
     private int initialHeight;
 
-    @Scheduled(fixedDelay = 1000)
     public void publishNulsEvents(){
         Result response = eventService.getLatestBlock();
         if(response.isSuccess()){
             Map<String,Object> blockMap = (Map<String, Object>)response.getData();
             int bestHeight = (Integer)blockMap.get("height");
-            //bestHeight = 84035;
             if(verifyBlockHeight(bestHeight)){
                 publishBlockEvent(blockMap);
                 response = eventService.getBlockByHeight(bestHeight);
@@ -116,7 +111,7 @@ public class EventPublisher {
         Result result = eventService.getTxByHash(hash);
         if(result.isSuccess() && result.getData() != null){
             Map<String,Object> dataMap = (Map<String,Object>)result.getData();
-            Transaction tx = EventUtil.getTransaction(type,(String)dataMap.get("value"));
+            Transaction tx = EventUtil.parseTransaction(type,(String)dataMap.get("value"));
             TransactionLogicData  data = tx.getTxData();
             for(byte[] addressByte : data.getAddresses()){
                 String agentAddress = AddressTool.getStringAddressByBytes(addressByte);
