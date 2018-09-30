@@ -50,7 +50,6 @@ public class EventPublisher {
                 int txType = (Integer)txMap.get("type");
                 String txHash = (String)txMap.get("hash");
                 List<Map<String, Object>> outputsList =  (List<Map<String, Object>>)txMap.get("outputs");
-                System.out.println("Transaction type  -> "+txType);
                 switch (txType) {
                     case EventConstant.TX_TYPE_COINBASE:
                         publishTxEvent(outputsList,EventResourceConstant.TX_COINBASE_SUBSCRIPTION);
@@ -71,7 +70,6 @@ public class EventPublisher {
         }
     }
     private boolean verifyBlockHeight(int bestHeight){
-        System.out.println("Block Height:"+bestHeight);
         if(bestHeight > initialHeight){
             this.initialHeight = bestHeight;
             return true;
@@ -84,7 +82,6 @@ public class EventPublisher {
     }
 
     private void publishTxEvent(List<Map<String, Object>> txOutPutList,String subscription){
-        System.out.println("Event Subscription: "+subscription);
         for(Map<String, Object> map : txOutPutList){
             String address = (String)map.get("address");
             this.template.convertAndSend(subscription+address, new SubscribableMessage(true,map));
@@ -115,7 +112,6 @@ public class EventPublisher {
             TransactionLogicData  data = tx.getTxData();
             for(byte[] addressByte : data.getAddresses()){
                 String agentAddress = AddressTool.getStringAddressByBytes(addressByte);
-                System.out.println("Yellow Card for Address:"+ agentAddress);
                 AgentPunishDTO dto = new AgentPunishDTO.AgentPunishDTOBuilder(agentAddress,type,time).build();
                 this.template.convertAndSend(subscription+agentAddress,new SubscribableMessage(true,dto));
             }
