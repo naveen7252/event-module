@@ -126,6 +126,12 @@ public class AgentPunishDTO {
            this.time = time;
         }
 
+        public AgentPunishDTOBuilder(String address,String type){
+            this.agentAddress = address;
+            this.punishType = type;
+            this.time = System.currentTimeMillis();
+        }
+
         public AgentPunishDTOBuilder setAgentHash(String agentHash){
             this.agentHash = agentName;
             return this;
