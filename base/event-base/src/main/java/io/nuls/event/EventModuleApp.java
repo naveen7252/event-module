@@ -25,7 +25,7 @@ public class EventModuleApp {
     }
 
     @Bean
-    private RestTemplateBuilder restTemplateBuilder() {
+    public RestTemplateBuilder restTemplateBuilder() {
         return new RestTemplateBuilder()
                 .rootUri(API_SERVER_URL);
     }
