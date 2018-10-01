@@ -24,6 +24,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.*;
 
+/**
+ * Implementation class for EventService. Provides functionality to get Nuls Blockchain information through REST API
+ */
 @Service
 public class EventServiceImpl implements EventService {
 
@@ -35,16 +38,30 @@ public class EventServiceImpl implements EventService {
 
     private AccountService accountService = null;
 
+    /**
+     * Get latest block from Nuls Blockchain
+     * @return Result
+     */
     @Override
     public Result getLatestBlock(){
 		return restTemplate.getForObject(EventResourceConstant.NEWEST_BLOCK,Result.class);
     }
 
+    /**
+     * Get block by height
+     * @param height
+     * @return Result
+     */
     @Override
     public Result getBlockByHeight(int height) {
         return restTemplate.getForObject(EventResourceConstant.BLOCK_BY_HEIGHT+height,Result.class);
     }
 
+    /**
+     * Get transaction by hash. The return value is bytes form.
+     * @param hash
+     * @return Result
+     */
     @Override
     public Result getTxByHash(String hash) {
         UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder.fromHttpUrl(API_SERVER_URL+EventResourceConstant.TX_BY_HASH_BYTES)
@@ -52,6 +69,11 @@ public class EventServiceImpl implements EventService {
         return restTemplate.getForObject(uriComponentsBuilder.build().encode().toUri(),Result.class);
     }
 
+    /**
+     * Get Yellow or Red card from the given block height if the underlying transaction is Red/Yellow Punish type
+     * @param height
+     * @return Result
+     */
     @Override
     public Result getAgentPunish(long height){
         List<PunishLogPo> list = PocConsensusContext.getChainManager().getMasterChain().getChain().getRedPunishList();

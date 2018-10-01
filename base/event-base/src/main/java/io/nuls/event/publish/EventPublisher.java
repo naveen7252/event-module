@@ -28,6 +28,10 @@ public class EventPublisher {
 
     private int initialHeight;
 
+    /**
+     * Publishes Nuls Blockchain events
+     * <p> Always gets latest block then generate events based on transaction type</p>
+     */
     public void publishNulsEvents(){
         Result response = eventService.getLatestBlock();
         if(response.isSuccess()){
@@ -58,10 +62,10 @@ public class EventPublisher {
                         publishTxEvent(outputsList,EventResourceConstant.TX_TRANSFER_SUBSCRIPTION);
                         break;
                     case EventConstant.TX_TYPE_YELLOW_PUNISH:
-                        publishAgentEvent(txMap,txHash,EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
+                        publishAgentPunishEvent(txMap,txHash,EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
                         break;
                     case EventConstant.TX_TYPE_RED_PUNISH:
-                        publishAgentEvent(txMap,txHash,EventResourceConstant.AGENT_REDCARD_SUBSCRIPTION);
+                        publishAgentPunishEvent(txMap,txHash,EventResourceConstant.AGENT_REDCARD_SUBSCRIPTION);
                     default:
                         System.out.println("Transaction type not supported -> "+txType);
                         break;
@@ -102,7 +106,7 @@ public class EventPublisher {
        }
     }
 
-    private void publishAgentEvent(Map<String,Object> txMap,String hash,String subscription){
+    private void publishAgentPunishEvent(Map<String,Object> txMap,String hash,String subscription){
         int type = (Integer) txMap.get("type");
         long time = (Long)txMap.get("time");
         Result result = eventService.getTxByHash(hash);
