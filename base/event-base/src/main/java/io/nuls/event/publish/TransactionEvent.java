@@ -16,11 +16,10 @@ import java.util.Map;
 @Component
 public class TransactionEvent extends AbstractNulsEvent {
 
-    private int initialTxBlkHeight;
-
     /**
      * Publishes Transaction events based on transaction type.
-     *
+     * For Coinbbase reward subscription /tx/receiveReward/{Nuls Address}
+     * For Transfer token subscription /tx/receiveToken/{Nuls Address}
      */
     @Override
     public void publish() {
@@ -28,11 +27,11 @@ public class TransactionEvent extends AbstractNulsEvent {
        if (result.isSuccess()){
            Map<String,Object> blockMap = (Map<String, Object>)result.getData();
            int height = (Integer) blockMap.get("height");
-           if( height > initialTxBlkHeight){
-               initialTxBlkHeight = height;
+           if(checkBlockHeight(height)){
                List<Map<String, Object>> txMapList = (List<Map<String, Object>>)blockMap.get("txList");
                for (Map txMap : txMapList){
                    int type  = (Integer) txMap.get("type");
+                   //System.out.println("TRANSACTION:::: Height :"+height+" TYPE :"+type+" initialHeight:"+initialBlockHeight);
                    List<Map<String, Object>> outputsList =  (List<Map<String, Object>>)txMap.get("outputs");
                    if(type == EventConstant.TX_TYPE_TRANSFER){
                        publishTxEvent(outputsList, EventResourceConstant.TX_TRANSFER_SUBSCRIPTION);

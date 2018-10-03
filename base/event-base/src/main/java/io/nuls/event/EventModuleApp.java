@@ -43,6 +43,6 @@ public class EventModuleApp {
     public ThreadPoolTaskScheduler taskScheduler(){
         ThreadPoolTaskScheduler taskScheduler = new ThreadPoolTaskScheduler();
         taskScheduler.setPoolSize(threadPoolSize);
-        return  taskScheduler;
+        return taskScheduler;
     }
 }

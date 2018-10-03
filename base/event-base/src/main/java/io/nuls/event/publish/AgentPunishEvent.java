@@ -20,11 +20,11 @@ import java.util.Map;
 @Component
 public class AgentPunishEvent extends AbstractNulsEvent {
 
-    private int initialAgentTxBlkHeight;
-
     /**
      * Publish agent punish event based on transaction type.
      *  Agent with their address can subscribe these events
+     *  For Yellow Card subscribe to /agent/yellowCard/{Agent_address}
+     *  For RED Card subscribe to /agent/redCard/{Agent_address}
      */
     @Override
     public void publish() {
@@ -32,10 +32,12 @@ public class AgentPunishEvent extends AbstractNulsEvent {
         if(result.isSuccess()){
             Map<String,Object> blockMap = (Map<String, Object>)result.getData();
             int height = (Integer) blockMap.get("height");
-            if(height > initialAgentTxBlkHeight){
+            ///System.out.println("height Agent :"+height);
+            if(checkBlockHeight(height)){
                 List<Map<String, Object>> txMapList = (List<Map<String, Object>>)blockMap.get("txList");
                 for(Map<String,Object> map : txMapList){
                     int type = (Integer)map.get("type");
+                    //System.out.println("AGENT::::: Height :"+height+" TYPE :"+type+" initialHeight:"+initialBlockHeight);
                     if (type == EventConstant.TX_TYPE_YELLOW_PUNISH){
                         publishAgentPunishEvent(map, EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
                     }else if(type == EventConstant.TX_TYPE_RED_PUNISH){

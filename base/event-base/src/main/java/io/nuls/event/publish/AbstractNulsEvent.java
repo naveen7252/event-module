@@ -20,6 +20,8 @@ public abstract class AbstractNulsEvent implements NulsEvent {
     @Autowired
     protected SimpMessagingTemplate template;
 
+    protected int initialBlockHeight;
+
     /**
      *  Gets latest block
      * @return Result
@@ -44,5 +46,13 @@ public abstract class AbstractNulsEvent implements NulsEvent {
             }
         }
         return null;
+    }
+
+    protected boolean checkBlockHeight(int height){
+        if(height > initialBlockHeight){
+            initialBlockHeight = height;
+            return true;
+        }
+        return false;
     }
 }
