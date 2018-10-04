@@ -1,6 +1,5 @@
 package io.nuls.event.publish;
 
-import io.nuls.event.model.SubscribableMessage;
 import io.nuls.event.service.EventService;
 import io.nuls.kernel.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ public abstract class AbstractNulsEvent implements NulsEvent {
     @Autowired
     protected SimpMessagingTemplate template;
 
-    protected int initialBlockHeight;
+    protected int localHeight;
 
     /**
      *  Gets latest block
@@ -35,7 +34,6 @@ public abstract class AbstractNulsEvent implements NulsEvent {
      * @return Result
      */
     protected Result getTxListFromBlock(){
-        List<Map<String, Object>> txListMap = null;
         Result result = getLatestBlock();
         if(result.isSuccess()){
             Map<String,Object> blockData = (Map<String,Object>)result.getData();
@@ -49,8 +47,8 @@ public abstract class AbstractNulsEvent implements NulsEvent {
     }
 
     protected boolean checkBlockHeight(int height){
-        if(height > initialBlockHeight){
-            initialBlockHeight = height;
+        if(height > localHeight){
+            localHeight = height;
             return true;
         }
         return false;
