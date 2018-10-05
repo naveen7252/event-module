@@ -28,7 +28,7 @@ public class AgentPunishEvent extends AbstractNulsEvent {
      */
     @Override
     public void publish() {
-        Result result =  getTxListFromBlock();
+        Result result =  getBlockWithTransactions();
         if(result.isSuccess()){
             Map<String,Object> blockMap = (Map<String, Object>)result.getData();
             int height = (Integer) blockMap.get("height");
@@ -37,7 +37,7 @@ public class AgentPunishEvent extends AbstractNulsEvent {
                 List<Map<String, Object>> txMapList = (List<Map<String, Object>>)blockMap.get("txList");
                 for(Map<String,Object> map : txMapList){
                     int type = (Integer)map.get("type");
-                    //System.out.println("AGENT::::: Height :"+height+" TYPE :"+type+" initialHeight:"+initialBlockHeight);
+                    System.out.println("AGENT::::: Height :"+height+" TYPE :"+type+" initialHeight:"+localHeight);
                     if (type == EventConstant.TX_TYPE_YELLOW_PUNISH){
                         publishAgentPunishEvent(map, EventResourceConstant.AGENT_YELLOWCARD_SUBSCRIPTION);
                     }else if(type == EventConstant.TX_TYPE_RED_PUNISH){

@@ -49,7 +49,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * Get block by height
-     * @param height
+     * @param height block height
      * @return Result
      */
     @Override
@@ -59,7 +59,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * Get transaction by hash. The return value is bytes form.
-     * @param hash
+     * @param hash transaction hash
      * @return Result
      */
     @Override
@@ -71,7 +71,7 @@ public class EventServiceImpl implements EventService {
 
     /**
      * Get Yellow or Red card from the given block height if the underlying transaction is Red/Yellow Punish type
-     * @param height
+     * @param height block height
      * @return Result
      */
     @Override
@@ -109,5 +109,10 @@ public class EventServiceImpl implements EventService {
             punishDTOS.add(EventUtil.buildAgentPunishDTO(new Agent(),po,alias));
         }
         return new Result(true,KernelErrorCode.SUCCESS,punishDTOS);
+    }
+
+    @Override
+    public Result getContractTxByHash(String hash) {
+        return restTemplate.getForObject(EventResourceConstant.CONTRACT_TX_BY_HASH+hash,Result.class);
     }
 }

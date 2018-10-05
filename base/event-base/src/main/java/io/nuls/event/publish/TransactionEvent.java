@@ -3,6 +3,7 @@ package io.nuls.event.publish;
 import io.nuls.event.constant.EventConstant;
 import io.nuls.event.constant.EventResourceConstant;
 import io.nuls.event.model.SubscribableMessage;
+import io.nuls.event.model.TransactionData;
 import io.nuls.kernel.model.Result;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ public class TransactionEvent extends AbstractNulsEvent {
      */
     @Override
     public void publish() {
-        Result result = getTxListFromBlock();
+        Result result = getBlockWithTransactions();
        if (result.isSuccess()){
            Map<String,Object> blockMap = (Map<String, Object>)result.getData();
            int height = (Integer) blockMap.get("height");
@@ -31,10 +32,10 @@ public class TransactionEvent extends AbstractNulsEvent {
                List<Map<String, Object>> txMapList = (List<Map<String, Object>>)blockMap.get("txList");
                for (Map txMap : txMapList){
                    int type  = (Integer) txMap.get("type");
-                   //System.out.println("TRANSACTION:::: Height :"+height+" TYPE :"+type+" initialHeight:"+initialBlockHeight);
+                   System.out.println("TRANSACTION:::: Height :"+height+" TYPE :"+type+" initialHeight:"+localHeight);
                    List<Map<String, Object>> outputsList =  (List<Map<String, Object>>)txMap.get("outputs");
                    if(type == EventConstant.TX_TYPE_TRANSFER){
-                       publishTxEvent(outputsList, EventResourceConstant.TX_TRANSFER_SUBSCRIPTION);
+                       publishTxEvent(outputsList, EventResourceConstant.TOKEN_RECEIVE_SUBSCRIPTION);
                    }else if(type == EventConstant.TX_TYPE_COINBASE){
                        publishTxEvent(outputsList, EventResourceConstant.TX_COINBASE_SUBSCRIPTION);
                    }
@@ -47,7 +48,10 @@ public class TransactionEvent extends AbstractNulsEvent {
     private void publishTxEvent(List<Map<String, Object>> txOutPutList,String subscription){
         for(Map<String, Object> map : txOutPutList){
             String address = (String)map.get("address");
-            this.template.convertAndSend(subscription+address, new SubscribableMessage(true,map));
+            TransactionData data = new TransactionData();
+            data.setAddress(address);
+            data.setNulsValue((Integer)map.get("value"));
+            this.template.convertAndSend(subscription+address, new SubscribableMessage(true,data));
         }
     }
 }

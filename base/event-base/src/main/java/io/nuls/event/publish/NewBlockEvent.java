@@ -25,7 +25,7 @@ public class NewBlockEvent extends AbstractNulsEvent {
             Map<String,Object> data = (Map<String,Object>) result.getData();
             int height = (Integer)data.get("height");
             if(checkBlockHeight(height)){
-               // System.out.println("NEW BLOCK :::: Height :"+height+" initialHeight:"+initialBlockHeight);
+                System.out.println("NEW BLOCK :::: Height :"+height+" initialHeight:"+localHeight);
                 this.template.convertAndSend(EventResourceConstant.NEW_BLOCK_SUBSCRIPTION, new SubscribableMessage(true,result.getData()));
             }
         }

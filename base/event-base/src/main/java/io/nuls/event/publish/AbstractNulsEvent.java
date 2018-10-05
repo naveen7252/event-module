@@ -33,7 +33,7 @@ public abstract class AbstractNulsEvent implements NulsEvent {
      *  Gets latest block with underlying transaction from Nuls Blockchain
      * @return Result
      */
-    protected Result getTxListFromBlock(){
+    protected Result getBlockWithTransactions(){
         Result result = getLatestBlock();
         if(result.isSuccess()){
             Map<String,Object> blockData = (Map<String,Object>)result.getData();

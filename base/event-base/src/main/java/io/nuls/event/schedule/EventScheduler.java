@@ -22,6 +22,9 @@ public class EventScheduler {
     private AgentPunishEvent  agentPunishEvent;
 
     @Autowired
+    private ContractEvent contractEvent;
+
+    @Autowired
     private EventEmitter eventEmitter;
 
     /**
@@ -49,4 +52,10 @@ public class EventScheduler {
     public void publishAgentPunishEvent(){
         eventEmitter.emit(agentPunishEvent);
     }
+
+    /**
+     * Scheduled task to generate Contract related events
+     */
+    @Scheduled(fixedDelay = 2000)
+    public void publishContractEvent(){eventEmitter.emit(contractEvent);}
 }
