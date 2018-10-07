@@ -49,7 +49,7 @@ public class TransactionEvent extends AbstractNulsEvent {
         for(Map<String, Object> map : txOutPutList){
             String address = (String)map.get("address");
             TransactionData data = new TransactionData();
-            data.setAddress(address);
+            data.setToAddress(address);
             data.setNulsValue((Integer)map.get("value"));
             this.template.convertAndSend(subscription+address, new SubscribableMessage(true,data));
         }

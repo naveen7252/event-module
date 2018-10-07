@@ -28,4 +28,5 @@ public interface EventConstant {
     int TX_TYPE_CREATE_CONTRACT = 100;
     int TX_TYPE_CALL_CONTRACT = 101;
     int TX_TYPE_DELETE_CONTRACT = 102;
+    int TX_TYPE_CONTRACT_TRANSFER = 103;
 }

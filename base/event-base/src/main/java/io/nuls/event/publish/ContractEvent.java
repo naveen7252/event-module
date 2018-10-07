@@ -42,6 +42,8 @@ public class ContractEvent extends AbstractNulsEvent {
                         case EventConstant.TX_TYPE_CALL_CONTRACT:
                             publishContractEvent(EventResourceConstant.TOKEN_RECEIVE_SUBSCRIPTION,eventService.getContractTxByHash(hash));
                             break;
+                        case EventConstant.TX_TYPE_CONTRACT_TRANSFER:
+                            break;
                         case EventConstant.TX_TYPE_DELETE_CONTRACT:
                             break;
                     }
@@ -51,6 +53,15 @@ public class ContractEvent extends AbstractNulsEvent {
     }
 
     private void publishContractEvent(String subscription,Result result){
+        ContractData contractData = prepareContractData(result);
+        if(null != contractData){
+            String receiver = contractData.getReceiver();
+            System.out.println("Subscription-->"+subscription+receiver+" contractData :"+contractData);
+            this.template.convertAndSend(subscription+receiver,new SubscribableMessage(true,new TransactionData(contractData)));
+        }
+    }
+
+    private ContractData prepareContractData(Result result){
         if(result.isSuccess()){
             Map<String,Object> map = (Map<String,Object>)result.getData();
             Map<String,Object> contractResult = (Map<String,Object>)map.get("contractResult");
@@ -63,15 +74,17 @@ public class ContractEvent extends AbstractNulsEvent {
             contractData.setSymbol((String)contractResult.get("symbol"));
             contractData.setTokenName((String)contractResult.get("name"));
             contractData.setRemark((String)contractResult.get("remark"));
-            for(Map<String,Object> tokenTransferMap : tokenTransfers){
-                String sender = (String)tokenTransferMap.get("from");
-                String receiver = (String)tokenTransferMap.get("to");
-                contractData.setSender(sender);
-                contractData.setReceiver(receiver);
-                contractData.setTokenValue((String)tokenTransferMap.get("value"));
-                System.out.println("Subscription-->"+subscription+receiver+" contractData :"+contractData);
-                this.template.convertAndSend(subscription+receiver,new SubscribableMessage(true,new TransactionData(contractData)));
+            if(null != tokenTransfers && !tokenTransfers.isEmpty()){
+                for(Map<String,Object> tokenTransferMap : tokenTransfers){
+                    String sender = (String)tokenTransferMap.get("from");
+                    String receiver = (String)tokenTransferMap.get("to");
+                    contractData.setSender(sender);
+                    contractData.setReceiver(receiver);
+                    contractData.setTokenValue((String)tokenTransferMap.get("value"));
+                }
             }
+            return contractData;
         }
+        return null;
     }
 }

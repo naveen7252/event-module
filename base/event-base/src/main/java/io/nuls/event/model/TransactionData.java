@@ -2,7 +2,7 @@ package io.nuls.event.model;
 
 public class TransactionData {
 
-    private String address;
+    private String toAddress;
 
     private long nulsValue;
 
@@ -16,12 +16,12 @@ public class TransactionData {
         this.contractData = contractData;
     }
 
-    public String getAddress() {
-        return address;
+    public String getToAddress() {
+        return toAddress;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setToAddress(String toAddress) {
+        this.toAddress = toAddress;
     }
 
     public long getNulsValue() {
@@ -43,7 +43,7 @@ public class TransactionData {
     @Override
     public String toString() {
         return "TransactionData{" +
-                "address='" + address + '\'' +
+                "toAddress='" + toAddress + '\'' +
                 ", nulsValue=" + nulsValue +
                 ", contractData=" + contractData +
                 '}';

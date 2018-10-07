@@ -21,10 +21,11 @@ Event module is another module that can be added to Nuls Blockchain.
 ##### Event Subscriptions
      Supported events as of now..  
       1. To subscribe to new block:  /block/latest
-      2. To subscribe to token receive event :  /tx/receiveToken/<your Nuls address>
-      3. To subscribe to consensus reward:      /tx/receiveReward/<your Nuls address>
+      2. To subscribe to token receive event(including NRC20 tokens) :  /tx/receiveToken/<your Nuls toAddress>
+      3. To subscribe to consensus reward:      /tx/receiveReward/<your Nuls toAddress>
       4. To subscribe to YELLOW cards for your node:  /agent/yellowCard/<agent_address>
       5. To subscribe to RED cards for your node: /agent/redCard/<agent_address>
+   
       
 #### Running the module
    
@@ -56,7 +57,7 @@ Event module is another module that can be added to Nuls Blockchain.
             
             Supported events as of now..  
                   1. To subscribe to new block:  /block/latest
-                  2. To subscribe to token receive event :  /tx/receiveToken/<your Nuls address>
+                  2. To subscribe to token receive event(including NRC20 tokens) :  /tx/receiveToken/<your Nuls toAddress>
                   3. To subscribe to consensus reward:      /tx/receiveReward/<your Nuls addtess>
                   4. To subscribe to YELLOW cards for your node:  /agent/yellowCard/<agent_address>
                   5. To subscribe to RED cards for your node: /agent/redCard/<agent_address>
