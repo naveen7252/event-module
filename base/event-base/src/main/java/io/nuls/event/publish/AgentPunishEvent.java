@@ -16,6 +16,7 @@ import java.util.Map;
 
 /**
  * Publishes Agent punish events
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class AgentPunishEvent extends AbstractNulsEvent {

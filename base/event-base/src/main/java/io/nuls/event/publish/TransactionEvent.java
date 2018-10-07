@@ -13,6 +13,7 @@ import java.util.Map;
 /**
  * Publishes Transaction related events.
  * Events are categorized based on transaction type
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class TransactionEvent extends AbstractNulsEvent {

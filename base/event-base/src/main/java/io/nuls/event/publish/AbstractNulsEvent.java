@@ -10,6 +10,7 @@ import java.util.Map;
 
 /**
  *  Abstract class for all Nuls events calss. Every new event class will extend this class
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 public abstract class AbstractNulsEvent implements NulsEvent {
 

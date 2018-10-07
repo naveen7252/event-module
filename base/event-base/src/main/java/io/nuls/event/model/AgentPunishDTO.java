@@ -2,6 +2,10 @@ package io.nuls.event.model;
 
 import io.nuls.consensus.poc.protocol.constant.PunishType;
 
+/**
+ * Data transfer Object DTO for Agent punishments details
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class AgentPunishDTO {
 
     private String agentHash;

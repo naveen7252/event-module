@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Spring scheduler class which schedules the tasks to generate events.
  * Each event is scheduled as separate task.
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class EventScheduler {

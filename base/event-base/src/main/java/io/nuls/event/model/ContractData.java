@@ -1,5 +1,9 @@
 package io.nuls.event.model;
 
+/**
+ * Conract Data
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class ContractData {
 
     private String contractAddress;

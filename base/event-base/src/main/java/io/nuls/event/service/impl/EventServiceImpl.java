@@ -26,6 +26,7 @@ import java.util.*;
 
 /**
  * Implementation class for EventService. Provides functionality to get Nuls Blockchain information through REST API
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Service
 public class EventServiceImpl implements EventService {

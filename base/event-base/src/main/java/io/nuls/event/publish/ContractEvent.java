@@ -16,6 +16,7 @@ import java.util.Map;
  * Generates Contract related events
  *  <li>Contract Creation Event</li> - Notified to contract creator
  *  <li>Contract Call Event (transfer)</li> - Notify token receive in case of transfer
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class ContractEvent extends AbstractNulsEvent {

@@ -2,6 +2,11 @@ package io.nuls.event.model;
 
 import java.io.Serializable;
 
+/**
+ * Message class to hold the data to be sent over web socket to subscribed clients
+ * @param <T> data of type T
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class SubscribableMessage<T>  implements Serializable {
 
     private boolean success;

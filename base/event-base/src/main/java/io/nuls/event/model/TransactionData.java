@@ -1,5 +1,9 @@
 package io.nuls.event.model;
 
+/**
+ * Transaction data fpr token transfers and Contract related data
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class TransactionData {
 
     private String toAddress;

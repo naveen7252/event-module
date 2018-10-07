@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * To generate events
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class EventEmitter {

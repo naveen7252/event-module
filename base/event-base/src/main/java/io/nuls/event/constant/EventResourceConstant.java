@@ -1,5 +1,9 @@
 package io.nuls.event.constant;
 
+/**
+ * Constants for API calls and web socket end points
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public interface EventResourceConstant {
 
     //Web Socket Subscriptions
