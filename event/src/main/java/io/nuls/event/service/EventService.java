@@ -11,4 +11,6 @@ public interface EventService {
      Result getTxByHash(String hash);
 
      Result getAgentPunish(long height);
+
+     Result getContractTxByHash(String hash);
 }

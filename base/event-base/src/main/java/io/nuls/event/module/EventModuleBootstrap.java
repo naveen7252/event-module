@@ -3,6 +3,10 @@ package io.nuls.event.module;
 import io.nuls.contract.constant.ContractConstant;
 import io.nuls.event.EventModuleApp;
 
+/**
+ * Implementation class to boot strap Event module.Client module bootstraps event module with this class
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class EventModuleBootstrap extends AbstractEventModule {
 
 

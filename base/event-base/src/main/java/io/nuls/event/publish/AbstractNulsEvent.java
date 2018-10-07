@@ -1,6 +1,5 @@
 package io.nuls.event.publish;
 
-import io.nuls.event.model.SubscribableMessage;
 import io.nuls.event.service.EventService;
 import io.nuls.kernel.model.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import java.util.Map;
 
 /**
  *  Abstract class for all Nuls events calss. Every new event class will extend this class
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 public abstract class AbstractNulsEvent implements NulsEvent {
 
@@ -20,7 +20,7 @@ public abstract class AbstractNulsEvent implements NulsEvent {
     @Autowired
     protected SimpMessagingTemplate template;
 
-    protected int initialBlockHeight;
+    protected int localHeight;
 
     /**
      *  Gets latest block
@@ -34,8 +34,7 @@ public abstract class AbstractNulsEvent implements NulsEvent {
      *  Gets latest block with underlying transaction from Nuls Blockchain
      * @return Result
      */
-    protected Result getTxListFromBlock(){
-        List<Map<String, Object>> txListMap = null;
+    protected Result getBlockWithTransactions(){
         Result result = getLatestBlock();
         if(result.isSuccess()){
             Map<String,Object> blockData = (Map<String,Object>)result.getData();
@@ -49,8 +48,8 @@ public abstract class AbstractNulsEvent implements NulsEvent {
     }
 
     protected boolean checkBlockHeight(int height){
-        if(height > initialBlockHeight){
-            initialBlockHeight = height;
+        if(height > localHeight){
+            localHeight = height;
             return true;
         }
         return false;

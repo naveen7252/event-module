@@ -8,6 +8,10 @@ import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBr
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
+/**
+ * Webb Socket configuration class. It configures web socket end points for subscription and message broker
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 @Configuration
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
@@ -21,7 +25,7 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry messageBrokerRegistry){
-        messageBrokerRegistry.enableSimpleBroker("/block","/agent","/tx");
+        messageBrokerRegistry.enableSimpleBroker("/block","/agent","/tx","/contract");
     }
 
 }

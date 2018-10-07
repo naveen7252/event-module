@@ -14,6 +14,10 @@ import io.nuls.kernel.utils.NulsByteBuffer;
 
 import java.util.Base64;
 
+/**
+ * Utility class for Event module
+ * @author Naveen(naveen.balamuri@gmail.com)
+ */
 public class EventUtil {
 
     public static AgentPunishDTO buildAgentPunishDTO(Agent agent,PunishLogPo po,String alias){

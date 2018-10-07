@@ -11,8 +11,9 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Spring boot application class which bootstraps event-module for Nuls Blockchain
  *
+ * Spring boot application class which bootstraps event-module for Nuls Blockchain
+ * @author Naveen
  */
 @SpringBootApplication
 @EnableScheduling

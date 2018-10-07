@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * Spring scheduler class which schedules the tasks to generate events.
  * Each event is scheduled as separate task.
+ * @author Naveen(naveen.balamuri@gmail.com)
  */
 @Component
 public class EventScheduler {
@@ -20,6 +21,9 @@ public class EventScheduler {
 
     @Autowired
     private AgentPunishEvent  agentPunishEvent;
+
+    @Autowired
+    private ContractEvent contractEvent;
 
     @Autowired
     private EventEmitter eventEmitter;
@@ -49,4 +53,10 @@ public class EventScheduler {
     public void publishAgentPunishEvent(){
         eventEmitter.emit(agentPunishEvent);
     }
+
+    /**
+     * Scheduled task to generate Contract related events
+     */
+    @Scheduled(fixedDelay = 2000)
+    public void publishContractEvent(){eventEmitter.emit(contractEvent);}
 }
