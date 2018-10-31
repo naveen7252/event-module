@@ -1,0 +1,31 @@
+Event Bus Module with web socket:
+==============================
+As per Nuls 2.0 protocol design, websockets will be the mode of communication between modules.So I have come up with below design.
+
+Components:
+-------
+1.EventBusBridge: It is websocket server endpoint (/eventbus/publish) to get events from publishers (ex:module1).Module1 publishes 
+  event(data + topic info) to this end point through websocket call. EventBusBridge calls EventBus publish method to send event.
+2.EventBus:
+    i.Initializes event topic information on module start up,accepts posted events from EventBusBridge. 
+    ii.Based on received topic info(it has subcriber receiving websocket end point details nothing but call back),event is sent to call back
+    iii. Stored new topic info to LevelDB/File  
+3.SubscribeManager: It sends event data to call back(websocket end point where the subscriber listen to the event) mentioned in the topic.
+
+Role of publishing module and Subscribing Modules:
+------------------------------------------
+
+Publishing Module:
+---------------
+  1.Always publishes the event to websocket end point (/eventbus/publish) with topic info like toicID.
+  2.It doens't know who is the subscriber for this event.
+  3.It doesn't bother about successful delivery??
+  
+Subscribing Module:
+------------------
+1. To subscribe to an event, it calls websocket endpoint (/eventbus/subscribe) by providing information like topic and module ID
+2. To unsubscribe to an event, it calls websocket endpoint (/eventbus/unsubscribe) by providing topic and module id information.
+3. To receive an event, it listens on websocket end point which is nothinf but call back. EventBus(SubscribeManager) sends the event data
+   to this call back through websocket communication.
+
+Need discussion on event farward failure..
